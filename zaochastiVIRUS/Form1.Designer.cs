@@ -40,6 +40,7 @@
             this.tbTitle = new System.Windows.Forms.TextBox();
             this.rtbFullText = new System.Windows.Forms.RichTextBox();
             this.rtbMiniText = new System.Windows.Forms.RichTextBox();
+            this.ofdLoadPrice = new System.Windows.Forms.OpenFileDialog();
             this.SuspendLayout();
             // 
             // btnSaveTemplate
@@ -51,6 +52,7 @@
             this.btnSaveTemplate.TabIndex = 29;
             this.btnSaveTemplate.Text = "Сохранить шаблон";
             this.btnSaveTemplate.UseVisualStyleBackColor = true;
+            this.btnSaveTemplate.Click += new System.EventHandler(this.btnSaveTemplate_Click);
             // 
             // label2
             // 
@@ -102,6 +104,7 @@
             this.btnPrice.TabIndex = 23;
             this.btnPrice.Text = "Обработать прайс";
             this.btnPrice.UseVisualStyleBackColor = true;
+            this.btnPrice.Click += new System.EventHandler(this.btnPrice_Click);
             // 
             // tbKeywords
             // 
@@ -145,6 +148,10 @@
             this.rtbMiniText.TabIndex = 18;
             this.rtbMiniText.Text = "";
             // 
+            // ofdLoadPrice
+            // 
+            this.ofdLoadPrice.FileName = "openFileDialog1";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -164,6 +171,7 @@
             this.Controls.Add(this.rtbMiniText);
             this.Name = "Form1";
             this.Text = "Запчасти VIRUS";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -183,6 +191,7 @@
         private System.Windows.Forms.TextBox tbTitle;
         private System.Windows.Forms.RichTextBox rtbFullText;
         private System.Windows.Forms.RichTextBox rtbMiniText;
+        private System.Windows.Forms.OpenFileDialog ofdLoadPrice;
     }
 }
 
