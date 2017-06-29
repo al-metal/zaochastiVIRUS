@@ -1,4 +1,6 @@
 ﻿using Bike18;
+using Microsoft.Office.Interop.Excel;
+using OfficeOpenXml;
 using RacerMotors;
 using System;
 using System.Collections.Generic;
@@ -148,7 +150,54 @@ namespace zaochastiVIRUS
 
         private void UpdatePrice()
         {
-            throw new NotImplementedException();
+            string l = tbLogin.Text;
+            string p = tbPasswords.Text;
+            CookieContainer cookie = nethouse.CookieNethouse(tbLogin.Text, tbPasswords.Text);
+            if (cookie.Count == 1)
+            {
+                MessageBox.Show("Логин или пароль для сайта введены не верно", "Ошибка логина/пароля");
+                return;
+            }
+
+            File.Delete("naSite.csv");
+            CreateCSV(cookie);
+        }
+
+        private void CreateCSV(CookieContainer cookie)
+        {
+            ControlsFormEnabledFalse();
+
+            List<string> newProduct = newList();
+            razdelCSV = "";
+            string miniRazdelCSV = "";
+
+           
+            Microsoft.Office.Interop.Excel.Application excel = new Microsoft.Office.Interop.Excel.Application();
+            Workbook wb = excel.Workbooks.Open(@"D:\123.xlsx");
+            Microsoft.Office.Interop.Excel.Worksheet ws = wb.ActiveSheet;
+            //Image img = ws.Shapes
+
+            Image one = (Image)ws.Shapes.Item(1).TopLeftCell.Cells[5, 1];
+            one.Save("123.jpg");
+
+            FileInfo file = new FileInfo(fileUrls);
+
+                ExcelPackage p = new ExcelPackage(file);
+            ExcelWorksheet w = p.Workbook.Worksheets[1];
+                    
+            int q = w.Dimension.Rows;
+
+            for (int i = 4; q > i; i++)
+            {
+                
+                if (w.Cells[i, 3].Value == null && w.Cells[i, 2].Value == null)
+                {
+
+                }
+            }
+
+                ControlsFormEnabledTrue();
+
         }
 
         private string MinitextStr()
@@ -233,6 +282,60 @@ namespace zaochastiVIRUS
         {
             tbLogin.Text = Properties.Settings.Default.login;
             tbPasswords.Text = Properties.Settings.Default.password;
+        }
+
+        private void ControlsFormEnabledFalse()
+        {
+           /* btnPrice.Invoke(new Action(() => btnPrice.Enabled = false));
+            btnImages.Invoke(new Action(() => btnImages.Enabled = false));
+            btnSaveTemplate.Invoke(new Action(() => btnSaveTemplate.Enabled = false));
+            rtbFullText.Invoke(new Action(() => rtbFullText.Enabled = false));
+            rtbMiniText.Invoke(new Action(() => rtbMiniText.Enabled = false));
+            tbDescription.Invoke(new Action(() => tbDescription.Enabled = false));
+            tbKeywords.Invoke(new Action(() => tbKeywords.Enabled = false));
+            tbTitle.Invoke(new Action(() => tbTitle.Enabled = false));
+            tbLogin.Invoke(new Action(() => tbLogin.Enabled = false));
+            tbPasswords.Invoke(new Action(() => tbPasswords.Enabled = false));*/
+        }
+
+        private void ControlsFormEnabledTrue()
+        {
+           /* btnPrice.Invoke(new Action(() => btnPrice.Enabled = true));
+            btnImages.Invoke(new Action(() => btnImages.Enabled = true));
+            btnSaveTemplate.Invoke(new Action(() => btnSaveTemplate.Enabled = true));
+            rtbFullText.Invoke(new Action(() => rtbFullText.Enabled = true));
+            rtbMiniText.Invoke(new Action(() => rtbMiniText.Enabled = true));
+            tbDescription.Invoke(new Action(() => tbDescription.Enabled = true));
+            tbKeywords.Invoke(new Action(() => tbKeywords.Enabled = true));
+            tbTitle.Invoke(new Action(() => tbTitle.Enabled = true));
+            tbLogin.Invoke(new Action(() => tbLogin.Enabled = false));
+            tbPasswords.Invoke(new Action(() => tbPasswords.Enabled = false));*/
+        }
+
+        private List<string> newList()
+        {
+            List<string> newProduct = new List<string>();
+            newProduct.Add("id");                                                                               //id
+            newProduct.Add("Артикул *");                                                 //артикул
+            newProduct.Add("Название товара *");                                          //название
+            newProduct.Add("Стоимость товара *");                                    //стоимость
+            newProduct.Add("Стоимость со скидкой");                                       //со скидкой
+            newProduct.Add("Раздел товара *");                                         //раздел товара
+            newProduct.Add("Товар в наличии *");                                                    //в наличии
+            newProduct.Add("Поставка под заказ *");                                                 //поставка
+            newProduct.Add("Срок поставки (дни) *");                                           //срок поставки
+            newProduct.Add("Краткий текст");                                 //краткий текст
+            newProduct.Add("Текст полностью");                                          //полностью текст
+            newProduct.Add("Заголовок страницы (title)");                               //заголовок страницы
+            newProduct.Add("Описание страницы (description)");                                 //описание
+            newProduct.Add("Ключевые слова страницы (keywords)");                                 //ключевые слова
+            newProduct.Add("ЧПУ страницы (slug)");                                   //ЧПУ
+            newProduct.Add("С этим товаром покупают");                              //с этим товаром покупают
+            newProduct.Add("Рекламные метки");
+            newProduct.Add("Показывать на сайте *");                                           //показывать
+            newProduct.Add("Удалить *");                                    //удалить
+            files.fileWriterCSV(newProduct, "naSite");
+            return newProduct;
         }
     }
 }
